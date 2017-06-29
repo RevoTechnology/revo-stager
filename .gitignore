@@ -10,3 +10,11 @@
 
 # rspec failure tracking
 .rspec_status
+
+## RVM
+.rvmrc
+.ruby-version
+.ruby-gemset
+
+## IDE
+.idea
