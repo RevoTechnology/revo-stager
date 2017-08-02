@@ -1,7 +1,7 @@
 module RevoStager
   class Railtie < Rails::Railtie
     rake_tasks do
-      load 'tasks/revo_stager.rake'
+      load 'tasks/install.rake'
     end
   end
 end
