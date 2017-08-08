@@ -1,5 +1,5 @@
 app_name: <%= Rails.application.class.parent_name.underscore.dasherize %>
 env:
-  - RAILS_ENV: staging
-  - LDAP_URL: 10.1.2.107
-  - SERVE_STATIC_FILES: true
+  RAILS_ENV: staging
+  LDAP_URL: 10.1.2.107
+  SERVE_STATIC_FILES: true
