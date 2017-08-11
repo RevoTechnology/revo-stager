@@ -5,14 +5,12 @@ namespace :stager do
 
   task :copy_config_file do
     puts '==Creating settings file'
-    config_dir = Pathname.new("config")
     config_template = File.expand_path("../../templates/stager.yml", __FILE__)
-    config_destination = config_dir.join('stager.yml')
 
-    if File.exist?(config_destination)
+    if File.exist?(CONFIG_FILE)
       puts '[skip] stager.yml already exists'
     else
-      File.open(config_destination, "w+") do |f|
+      File.open(CONFIG_FILE, "w+") do |f|
         f.write(ERB.new(File.read(config_template)).result(binding))
       end
       puts 'Settings file created'
