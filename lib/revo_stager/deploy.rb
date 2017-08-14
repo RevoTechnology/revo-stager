@@ -9,12 +9,8 @@ module RevoStager
       puts stage_name
       #create flynn app
       create_flynn_app
-      #add mysql resource
-      #TODO: use another db resources from config
-      add_mysql_resource
-      #patch mysql env
-      #TODO: check for db resource type
-      patch_mysql_connection_string
+      #add resources
+      add_resources
       #set envs
       set_env_variables
       #run tasks(schema, seeds, etc)
@@ -52,16 +48,32 @@ module RevoStager
       puts result.code.success? ? 'Flynn stage successfully created' : 'Flynn stage failed to create'
     end
 
-    def add_mysql_resource
-      #TODO: check for resource exists
-      puts '==Adding mysql resource'
+    def add_resources
+      puts '==Adding resources'
+      config['resources'].each do |resource|
+        #add resource
+        puts "====Adding #{resource} resource"
 
-      result = flynn_cli.add_resource('mysql')
-      printf result.output
-      puts result.code.success? ? 'Flynn resource successfully added' : 'Flynn resource failed to added'
+        result = flynn_cli.add_resource(resource)
+        printf result.output
+        puts result.code.success? ? 'Flynn resource successfully added' : 'Flynn resource failed to added'
+        #run hooks
+        hook_name = "run_#{resource}_resource_hook".to_sym
+        send(hook_name) if respond_to?(hook_name)
+      end
     end
 
-    def patch_mysql_connection_string
+    def set_env_variables
+      puts '==Setting env variables'
+      config['env'].each do |name, val|
+        result = flynn_cli.set_env(name, val)
+        printf result.output
+        puts result.code.success? ? "Flynn env #{name} successfully set" : "Flynn env #{name} failed to set"
+      end
+    end
+
+    #hooks
+    def run_mysql_resource_hook
       puts '==Patch mysql env string'
 
       env_key = 'DATABASE_URL'
@@ -77,15 +89,6 @@ module RevoStager
         result = flynn_cli.set_env(env_key, current_value)
         printf result.output
         puts result.code.success? ? "Flynn env #{env_key} successfully set" : "Flynn env #{env_key} failed to set"
-      end
-    end
-
-    def set_env_variables
-      puts '==Setting env variables'
-      config['env'].each do |name, val|
-        result = flynn_cli.set_env(name, val)
-        printf result.output
-        puts result.code.success? ? "Flynn env #{name} successfully set" : "Flynn env #{name} failed to set"
       end
     end
   end
