@@ -13,6 +13,8 @@ module RevoStager
       add_resources
       #set envs
       set_env_variables
+      #push changes
+      push_changes
       #run tasks(schema, seeds, etc)
     end
 
@@ -59,7 +61,7 @@ module RevoStager
         puts result.code.success? ? 'Flynn resource successfully added' : 'Flynn resource failed to added'
         #run hooks
         hook_name = "run_#{resource}_resource_hook".to_sym
-        send(hook_name) if respond_to?(hook_name)
+        send(hook_name) if respond_to?(hook_name, true)
       end
     end
 
@@ -70,6 +72,11 @@ module RevoStager
         printf result.output
         puts result.code.success? ? "Flynn env #{name} successfully set" : "Flynn env #{name} failed to set"
       end
+    end
+
+    def push_changes
+      puts '==Pushing changes'
+      puts `git push #{stage_name} #{current_branch}:master`
     end
 
     #hooks
