@@ -16,6 +16,7 @@ module RevoStager
       #push changes
       push_changes
       #run tasks(schema, seeds, etc)
+      run_tasks
     end
 
     private
@@ -77,6 +78,16 @@ module RevoStager
     def push_changes
       puts '==Pushing changes'
       puts `git push #{stage_name} #{current_branch}:master`
+    end
+
+    def run_tasks
+      puts '==Running tasks'
+      config['tasks'].each do |task|
+        puts "====Running #{task}"
+        result = flynn_cli.run_task(task)
+        printf result.output
+        puts result.code.success? ? 'Flynn task complete' : 'Flynn task failed to run'
+      end
     end
 
     #hooks

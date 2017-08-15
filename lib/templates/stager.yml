@@ -7,3 +7,5 @@ resources:
   #- mysql
   #- postgres
   #- redis
+tasks:
+  #- 'rake db:migrate'

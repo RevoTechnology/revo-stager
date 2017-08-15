@@ -24,6 +24,11 @@ module RevoStager
       exec_cmd(cmd)
     end
 
+    def run_task(task_cmd)
+      cmd = "flynn -a #{app_name} run #{task_cmd}"
+      exec_cmd(cmd)
+    end
+
     private
 
     attr_reader :app_name
