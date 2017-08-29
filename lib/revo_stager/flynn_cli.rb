@@ -24,6 +24,16 @@ module RevoStager
       exec_cmd(cmd)
     end
 
+    def delete_resource(name)
+      resources = list_resources name
+      resources.each do |r|
+        cmd = "flynn -a #{app_name} resource remove #{name} #{r[:id]}"
+        puts cmd
+        next
+        exec_cmd(cmd)
+      end
+    end
+
     def run_task(task_cmd)
       cmd = "flynn -a #{app_name} run #{task_cmd}"
       exec_cmd(cmd)
@@ -44,6 +54,17 @@ module RevoStager
         exit_code = wait_thr.value
       end
       OpenStruct.new(code: exit_code, output: output, std_out: std_out)
+    end
+
+    def list_resources(name)
+      cmd = "flynn -a #{app_name} resource"
+      result = exec_cmd cmd
+      list = result.std_out.split("\n")
+      list.shift
+      values = list.map do |item|
+        Hash[[:id, :provider_id, :type].zip(item.split(' '))]
+      end
+      values.select{|i| i[:type] == name}
     end
   end
 end

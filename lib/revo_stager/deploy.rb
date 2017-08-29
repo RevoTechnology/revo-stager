@@ -11,10 +11,10 @@ module RevoStager
       create_flynn_app
       #add resources
       add_resources
-      #set envs
-      set_env_variables
       #push changes
       push_changes
+      #set envs
+      set_env_variables
       #run tasks(schema, seeds, etc)
       run_tasks
     end
@@ -54,6 +54,10 @@ module RevoStager
     def add_resources
       puts '==Adding resources'
       config['resources'].each do |resource|
+        #removing resources
+        puts "====Removing #{resource}"
+        flynn_cli.delete_resource(resource)
+
         #add resource
         puts "====Adding #{resource} resource"
 
