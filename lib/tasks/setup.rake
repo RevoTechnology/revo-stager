@@ -5,10 +5,10 @@ namespace :stager do
     puts '==Creating settings file'
     config_template = File.expand_path("../../templates/stager.yml", __FILE__)
 
-    if File.exist?(CONFIG_FILE)
+    if File.exist?(RevoStager::CONFIG_FILE)
       puts '[skip] stager.yml already exists'
     else
-      File.open(CONFIG_FILE, "w+") do |f|
+      File.open(RevoStager::CONFIG_FILE, "w+") do |f|
         f.write(ERB.new(File.read(config_template)).result(binding))
       end
       puts 'Settings file created'
