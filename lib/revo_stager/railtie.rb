@@ -5,8 +5,8 @@ module RevoStager
     railtie_name :revo_stager
 
     rake_tasks do
-      load 'tasks/install.rake'
       load 'tasks/deploy.rake'
+      load 'tasks/install.rake'
     end
   end
 end
