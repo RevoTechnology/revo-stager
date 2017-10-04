@@ -1,3 +1,5 @@
+require 'open3'
+
 namespace :stager do
 
   desc 'Prepares config file'
