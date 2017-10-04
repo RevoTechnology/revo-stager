@@ -88,6 +88,7 @@ module RevoStager
 
     def run_tasks
       puts '==Running tasks'
+      return if config['tasks'].nil?
       config['tasks'].each do |task|
         puts "====Running #{task}"
         result = flynn_cli.run_task(task)
