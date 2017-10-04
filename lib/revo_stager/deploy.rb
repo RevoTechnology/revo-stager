@@ -53,7 +53,7 @@ module RevoStager
 
     def add_resources
       puts '==Adding resources'
-      return unless config['resources'].any?
+      return if config['resources'].nil?
       config['resources'].each do |resource|
         #removing resources
         puts "====Removing #{resource}"
@@ -73,7 +73,7 @@ module RevoStager
 
     def set_env_variables
       puts '==Setting env variables'
-      return unless config['env'].any?
+      return if config['env'].nil?
       config['env'].each do |name, val|
         result = flynn_cli.set_env(name, val)
         printf result.output
