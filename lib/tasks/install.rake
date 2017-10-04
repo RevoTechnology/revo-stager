@@ -42,7 +42,8 @@ namespace :stager do
   end
 
   desc 'Configurates app'
-  task :install => [:copy_config_file, :install_flynn_agent, :add_flynn_cluster] do
-
+  # task :install => [:copy_config_file, :install_flynn_agent, :add_flynn_cluster] do
+  task :install do
+    puts 'install'
   end
 end
