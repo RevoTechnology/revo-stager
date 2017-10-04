@@ -6,7 +6,7 @@ module RevoStager
 
     rake_tasks do
       load 'tasks/deploy.rake'
-      load 'tasks/install.rake'
+      load 'tasks/setup.rake'
     end
   end
 end
