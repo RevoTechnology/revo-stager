@@ -28,8 +28,6 @@ module RevoStager
       resources = list_resources name
       resources.each do |r|
         cmd = "flynn -a #{app_name} resource remove #{name} #{r[:id]}"
-        puts cmd
-        next
         exec_cmd(cmd)
       end
     end
