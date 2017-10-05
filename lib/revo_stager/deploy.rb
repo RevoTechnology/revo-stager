@@ -9,6 +9,8 @@ module RevoStager
       puts stage_name
       #create flynn app
       create_flynn_app
+      #scale down
+      scale_down
       #add resources
       add_resources
       #push changes
@@ -17,6 +19,8 @@ module RevoStager
       set_env_variables
       #run tasks(schema, seeds, etc)
       run_tasks
+      #scale up
+      scale_up
     end
 
     private
@@ -49,6 +53,22 @@ module RevoStager
       result = flynn_cli.create_app
       printf result.output
       puts result.code.success? ? 'Flynn stage successfully created' : 'Flynn stage failed to create'
+    end
+
+    def scale_down
+      puts '==Scale stage down'
+
+      result = flynn_cli.scale('web', 0)
+      printf result.output
+      puts result.code.success? ? 'Flynn stage successfully scaled down' : 'Flynn stage failed to scale down'
+    end
+
+    def scale_up
+      puts '==Scale stage up'
+
+      result = flynn_cli.scale('web', 1)
+      printf result.output
+      puts result.code.success? ? 'Flynn stage successfully scaled up' : 'Flynn stage failed to scale up'
     end
 
     def add_resources

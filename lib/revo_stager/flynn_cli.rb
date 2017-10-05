@@ -24,6 +24,11 @@ module RevoStager
       exec_cmd(cmd)
     end
 
+    def scale(type, count)
+      cmd = "flynn -a #{app_name} scale #{type}=#{count}"
+      exec_cmd(cmd)
+    end
+
     def add_resource(name)
       cmd = "flynn -a #{app_name} resource add #{name}"
       exec_cmd(cmd)
