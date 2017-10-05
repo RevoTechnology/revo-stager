@@ -19,6 +19,11 @@ module RevoStager
       exec_cmd(cmd)
     end
 
+    def unset_env(key)
+      cmd = "flynn -a #{app_name} env unset #{key}"
+      exec_cmd(cmd)
+    end
+
     def add_resource(name)
       cmd = "flynn -a #{app_name} resource add #{name}"
       exec_cmd(cmd)

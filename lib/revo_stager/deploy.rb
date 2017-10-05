@@ -55,6 +55,10 @@ module RevoStager
       puts '==Adding resources'
       return if config['resources'].nil?
       config['resources'].each do |resource|
+        #run delete hook
+        delete_hook_name = "run_#{resource}_delete_resource_hook".to_sym
+        send(delete_hook_name) if respond_to?(delete_hook_name, true)
+
         #removing resources
         puts "====Removing #{resource}"
         flynn_cli.delete_resource(resource)
@@ -115,6 +119,16 @@ module RevoStager
         printf result.output
         puts result.code.success? ? "Flynn env #{env_key} successfully set" : "Flynn env #{env_key} failed to set"
       end
+    end
+
+    def run_mysql_delete_resource_hook
+      puts '==Delete mysql url env string'
+
+      env_key = 'DATABASE_URL'
+
+      result = flynn_cli.unset_env(env_key)
+      printf result.output
+      puts result.code.success? ? "Flynn env #{env_key} successfully unset" : "Flynn env #{env_key} failed to unset"
     end
   end
 end
